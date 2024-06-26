@@ -1,0 +1,28 @@
+#1 How many companies have high, moderate and low amounts of pto?
+
+SELECT COUNT(company_name) AS total_companies, CASE WHEN paid_time_off_days >= 20 THEN "High PTO" WHEN paid_time_off_days >= 16 THEN "Moderate PTO" ELSE "Low PTO" END AS company_pto
+FROM fortune_companies
+GROUP BY company_pto
+ORDER BY total_companies desc;
+
+#2 What companies in the technology industry employ many people, and what is the average tenure at those companies?
+
+SELECT company_name, avg_employee_tenure FROM fortune_companies
+WHERE industry = "Technology" AND employees >= 75000;
+
+#3 What are the highest revenues in an industry for an individual company where the revenue is 350 or more?
+
+SELECT industry, MAX(revenue) FROM fortune_companies
+GROUP BY industry
+HAVING MAX(revenue) >= 350
+ORDER BY MAX(revenue) desc;
+
+#4 What industry employs the most people between Technology and Retail?
+
+SELECT industry, SUM(employees) AS total_employees FROM fortune_companies
+WHERE industry IN ("Technology", "Retail")
+GROUP BY industry;
+
+#5 What companies offer healthcare benefits and offer generous maternity leave or generous paid time off?
+SELECT company_name, maternity_leave_weeks, paid_time_off_days FROM fortune_companies
+WHERE healthcare_benefits = 1 AND maternity_leave_weeks >= 12 OR paid_time_off_days >= 20;
